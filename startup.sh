@@ -13,22 +13,22 @@ sudo dnf update && sudo dnf upgrade
 sudo dnf remove libreoffice-* -y
 sudo dnf remove firefox-* -y
 sudo dnf autoremove
-sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf update && sudo dnf upgrade
+sudo dnf install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y
+sudo dnf update -y && sudo dnf upgrade -y
 sudo fwupdmgr update
 sudo fwupdmgr get-updates
 sudo fwupdmgr update
 
 # install h264 codecs
-sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
-sudo dnf groupupdate sound-and-video
-sudo dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel ffmpeg gstreamer-ffmpeg
-sudo dnf install lame\* --exclude=lame-devel
-sudo dnf group upgrade --with-optional Multimedia
+sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
+sudo dnf groupupdate sound-and-video -y
+sudo dnf install -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel ffmpeg gstreamer-ffmpeg
+sudo dnf install -y lame\* --exclude=lame-devel
+sudo dnf group upgrade --with-optional Multimedia -y
 
 # H/W Video Decoding
-sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
+sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 
 # install theworks
 sudo dnf install -y google-chrome neofetch gnome-extensions-app gnome-tweaks htop cool-retro-term lpf-mscore-fonts lpf-cleartype-fonts transmission terminology btop
@@ -52,7 +52,6 @@ sudo systemctl start docker
 sudo docker run hello-world
 sudo groupadd docker
 sudo usermod -aG docker $USER
-sudo newgrp docker
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 
@@ -60,10 +59,7 @@ sudo systemctl enable containerd.service
 sudo dnf install -y steam
 
 # enable flathub repo
-flatpak remote-add-if-not-exists flathub
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # speed up grub
 sudo dnf install grub-customizer
-
-# Download Starship
-curl -sS https://starship.rs/install.sh | sh
